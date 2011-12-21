@@ -5,7 +5,7 @@ declare(encoding='UTF-8');
  * Toss convenience funcs into the global namespace.
  * All of these are available as instance methods on Application
  * but put here to make them easier to get reach. In other words, just syntactic sugar.
- * To disable this global namespace pollution set: 
+ * To disable this global namespace pollution set:
  *	define('OMIT_GLOBAL_HELPERS', true);
  * Before including the Application class.
  */
@@ -22,8 +22,8 @@ namespace {
 
 		function error($handler)						{	application()->error($handler); }
 		function not_found($handler)				{	application()->not_found($handler); }
-	
-		function configure($environment, $handler=false)	{	application()->configure($environment, $handler); }	
+
+		function configure($environment, $handler=false)	{	application()->configure($environment, $handler); }
 
 
 		// ===========================================================

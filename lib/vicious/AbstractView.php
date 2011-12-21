@@ -14,16 +14,16 @@ class AbstractView implements Renderable
 	protected $props								= array();
 	protected $extension						= false;
 	protected $content_type_header	= false;
-	
+
 	public function AbstractView() {}
-	
+
 	public function render() {}
 
 	public function send_content_type_header() {
 		# set the content_type_header if there is one
 		if ($this->content_type_header !== false && !\options('cli')) header($this->content_type_header);
 	}
-	
+
 	/**
 	 * Autodetect the layout
 	 * Looks for a file named "layout.$this->extension" in the views dir
@@ -38,8 +38,8 @@ class AbstractView implements Renderable
 		}
 		return false;
 	}
-	
-	
+
+
 // ===========================================================
 // - MAGICAL ACCESSORS FOR SETTING PROPERTIES IN THE VIEW
 // ===========================================================
@@ -48,16 +48,16 @@ class AbstractView implements Renderable
 			case 'template':
 				$this->set_template($v);
 				break;
-			
+
 			case 'layout':
 				$this->set_layout($v);
 				break;
-			
+
 			default:
 				$this->props[$k] = $v;
 		}
 	}
-	
+
 	public function __get($k) {
 		switch ($k) {
 			case 'template':
@@ -65,12 +65,12 @@ class AbstractView implements Renderable
 
 			case 'layout':
 				return $this->layout();
-			
+
 			default:
 				return isset($this->props[$k]) ? $this->props[$k] : false;
 		}
 	}
-	
+
 // ===========================================================
 // - ACCESSORS
 // ===========================================================
@@ -79,8 +79,8 @@ class AbstractView implements Renderable
 
 	public function layout() 				{ return ($this->_layout === null) ? $this->autofind_layout() : $this->_layout; }
 	public function set_layout($l)	{ $this->_layout = $l; }
-	
-	
+
+
 }
 
 // ===========================================================

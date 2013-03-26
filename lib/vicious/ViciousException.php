@@ -5,7 +5,7 @@ namespace vicious {
 
 
 class ViciousException extends \Exception {
-	
+
 // ===========================================================
 // - Constructor
 // ===========================================================

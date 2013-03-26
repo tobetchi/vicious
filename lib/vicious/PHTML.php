@@ -14,39 +14,39 @@ class PHTML extends AbstractView
 	public function render() {
 		# make sure we have a template
 		if ($this->template === false) throw new TemplateUndefined();
-		
+
 		parent::render();
-		
+
 		# unpack the props
 		extract($this->props);
-		
+
 		# trap the buffer
 		ob_start();
-		
+
 		# include the template
 		require \options('views').'/'.$this->template.'.'.$this->extension;
-		
+
 		# get the buffer contents
 		$parsed = ob_get_contents();
-		
+
 		# clean the buffer
 		ob_clean();
-		
+
 		# if there is a layout
 		if ($this->layout) {
 			# push the content into the layout
 			$content_for_layout = $parsed;
-		
+
 			# include the template
 			include \options('views').'/'.$this->layout.".".$this->extension;
-	
+
 			# get the buffer contents
 			$parsed = ob_get_contents();
 		}
-		
+
 		# close the output buffer
 		ob_end_clean();
-		
+
 		# echo the result
 		echo $parsed;
 	}
@@ -68,7 +68,7 @@ namespace {
  */
 function phtml($template=null, $layout=null) {
 	static $instance;
-	if (!$instance) $instance = new vicious\PHTML();	
+	if (!$instance) $instance = new vicious\PHTML();
 	if ($template !== null) $instance->set_template($template);
 	if ($layout !== null) $instance->set_layout($layout);
 	return $instance;

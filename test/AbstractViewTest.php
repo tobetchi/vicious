@@ -10,11 +10,11 @@ class AbstractViewTest extends PHPUnit_Framework_TestCase
 		$layout = '<!DOCTYPE html><html><head><title><?= $title; ?></title></head><body><?= $content_for_layout; ?></body></html>';
 		$this->tmp = '/tmp/vicious_test';
 		if (!file_exists($this->tmp)) mkdir($this->tmp);
-	
+
 		$f = fopen($this->tmp.'/layout.phtml', 'w');
 		fwrite($f, $layout);
 		fclose($f);
-		set('views', $this->tmp);		
+		set('views', $this->tmp);
 
 	}
 

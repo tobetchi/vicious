@@ -16,7 +16,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$f = fopen($this->tmp.'/view.phtml', 'w');
 		fwrite($f, $view);
 		fclose($f);
-		set('views', $this->tmp);		
+		set('views', $this->tmp);
 	}
 
 	public function tearDown() {
@@ -32,18 +32,18 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$r = new ApplicationTestWrapper();
 		$r->not_found(function($e) {echo 'Not found: '.get_class($e); });
 		$r->error(function($e) {echo 'Error: '.get_class($e); });
-		
+
 		$e = new vicious\NotFound();
 		ob_start();
 		$r->handle_error($e);
 		$o = ob_get_clean();
 		$this->assertEquals('Not found: vicious\NotFound', $o);
-		
+
 		$v = new vicious\ViciousException();
 		ob_start();
 		$r->handle_error($v);
 		$o = ob_get_clean();
-		$this->assertEquals('Error: vicious\ViciousException', $o);			
+		$this->assertEquals('Error: vicious\ViciousException', $o);
 	}
 
 	public function testGet() {
@@ -130,7 +130,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 	public function testParams() {
 		$r = new ApplicationTestWrapper();
 		$r->get('/person/:name/:id', function() { return '/person'; });
-		ob_start();			
+		ob_start();
 		$r->dispatch('/person/bob/55', 'GET');
 		$o = ob_get_clean();
 
@@ -145,13 +145,13 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$r->get('/person/:name/:id', function() { return '/person'; });
 		$r->get('/', function() { phtml()->title="test"; return phtml('view');});
 
-		ob_start();			
+		ob_start();
 		$r->dispatch('/person/bob/55', 'GET');
 		$o = ob_get_clean();
 
 		$this->assertEquals('/person', $o);
 
-		ob_start();			
+		ob_start();
 		$r->dispatch('/', 'GET');
 		$o = ob_get_clean();
 
@@ -170,7 +170,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals('/person', $o);
 
-		ob_start();			
+		ob_start();
 		$request = new vicious\Request('/', 'GET');
 		$r->dispatch($request);
 		$o = ob_get_clean();
@@ -182,7 +182,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$r = new ApplicationTestWrapper();
 		$r->get('/person/:name/:id', function() { return '/person/'.options('test'); });
 		$r->before(function() { echo "FILTER"; set('test', 'testing'); });
-		ob_start();			
+		ob_start();
 		$r->dispatch('/person/bob/55', 'GET');
 		$o = ob_get_clean();
 		$this->assertEquals($o, 'FILTER/person/testing');
@@ -194,7 +194,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$r->configure(DEVELOPMENT, function() { set('dev', 'testing'); });
 		$r->configure(PRODUCTION, function() { set('dev', 'not-testing'); });
 		$r->configure(DEVELOPMENT, function() { set('another_dev', 'testing'); });
-		ob_start();			
+		ob_start();
 		$r->dispatch('/', 'GET');
 		$o = ob_get_clean();
 		$this->assertEquals('/testing/testing', $o);
@@ -243,10 +243,10 @@ class ApplicationTestWrapper extends vicious\Application
 		$this->router = new RouterTestWrapper();
 
 	}
-	
+
 	# to keep the "already sent" errs from happening, ugh.
 	public function status($s) {
-	
+
 	}
 }
 

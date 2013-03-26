@@ -18,7 +18,7 @@ class Router
 		$this->routes['POST']		= array();
 		$this->routes['PUT']		= array();
 		$this->routes['GET']		= array();
-		$this->routes['DELETE']	= array(); 
+		$this->routes['DELETE']	= array();
 	}
 
 
@@ -32,14 +32,14 @@ class Router
 		if (is_array($pattern) && array_key_exists("regex", $pattern)) {
 			$regex = $pattern['regex'];
 			$pattern = false;
-			
+
 		} else {
 			# choose regex delimiter dynamically incase a pipe is in the pattern
 			$delim = '|';
 			foreach(array('|', '`', '~', '^', "#") as $delim) if (strpos($pattern, $delim) === false) break;
-		
+
 			$terminate = (strpos($pattern, ':') || strpos($pattern, '*')) ? '' : '$';
-		
+
 			$regex = $delim.'^'.preg_replace_callback(
 				'/\/([:|\*])?([a-zA-Z0-9_]*)/',
 				array($this, 'pattern_to_regex'),
@@ -62,7 +62,7 @@ class Router
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected function url_matches_route($url, $route) {
 		# make sure they match
@@ -76,10 +76,10 @@ class Router
 
 		# make sure they match
 		$urlparts = array();
-		
+
 		# just in case
 		if (!preg_match($regex, $url, $urlparts)) return false;
-		
+
 		# switch here if the pattern was a regex from the user,
 		# just populate params with indexes
 		if ($pattern == false) {
@@ -90,7 +90,7 @@ class Router
 			array_shift($parts);
 			array_shift($urlparts);
 
-			foreach($parts as $k => $v) {			
+			foreach($parts as $k => $v) {
 				if (empty($v)) continue;
 				if ($v{0} == ':' || $v{0} == '*') {
 					$name = ($v{0} == '*') ? 'splat' : substr($v,1);
@@ -101,12 +101,12 @@ class Router
 					# clear nulls
 					if (is_null($out[$name])) unset($out[$name]);
 				}
-			}	
+			}
 		}
 
 		return $out;
 	}
-	
+
 
 	/**
 	* Find the best matching map for the url
@@ -126,7 +126,7 @@ class Router
 		}
 		return false;
 	}
-	
+
 	/**
 	* find the best route and return it
 	*/
@@ -142,19 +142,19 @@ class Router
 
 		# if no match was found, throw
 		if ($active_route === false) throw new NotFound("No mapping was found for &quot;$url&quot;.");
-		
+
 		# get the params for this url using the choosen route
 		$params = $this->params_for_url_with_route($url, $active_route);
-		
+
 		# add request to params and make sure magic quotes are dealt with
 		$params = $this->process_request_vars($params);
-	
+
 		$active_route->set_params($params);
-		
+
 		# return the route
 		return $active_route;
 	}
-	
+
 
 	protected function process_request_vars($params) {
 		# add request to params and make sure magic quotes are dealt with
@@ -176,20 +176,20 @@ class Router
 				}
 			}
 		}
-		
+
 		# add files to params
 		foreach($_FILES as $k => $v) {
 			if (!array_key_exists($k, $params)) $params[$k] = array();
 			$params[$k] = array_merge(
-				$params[$k], 
+				$params[$k],
 				# TODO: easy file uploads
 				$v
 			);
 		}
 		return $params;
 	}
-	
-	
+
+
 // ===========================================================
 // - ACCESSORS
 // ===========================================================
@@ -199,7 +199,7 @@ class Router
 	public function set_base($val) {
 		$this->base = $val;
 	}
-	
+
 	public function base() {
 		return $this->base?$this->base:'/';
 	}
@@ -215,7 +215,7 @@ class UnknownController extends ViciousException {}
 }
 
 namespace {
-	
+
 	function r($pattern) {
 		return array('regex' => $pattern);
 	}

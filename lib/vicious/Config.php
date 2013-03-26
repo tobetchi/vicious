@@ -19,9 +19,9 @@ class Config
 		$this->app_file				= false;
 		$this->app_root				= false;
 		$this->views					= false;
-		$this->cli						= (php_sapi_name() == 'cli');		
+		$this->cli						= (php_sapi_name() == 'cli');
 	}
-	
+
 	/**
 	 * Return the same instance of this class.
 	 */
@@ -34,26 +34,26 @@ class Config
 		return $instance;
 	}
 
-	
+
 // ===========================================================
 // - MAGICAL ACCESSORS FOR SETTING PROPERTIES
 // ===========================================================
 	public function __set($k, $v) {
 		$this->props[$k] = $v;
 	}
-	
+
 	public function __get($k) {
 		# set defaults for items dependent on the app_file
 		if ($k == 'views' && $this->props['views'] == false) {
 			$this->views = $this->app_root.'/views';
 			return $this->props['views'];
-		
+
 		} else if ($k == 'app_root' && $this->props['app_root'] == false) {
 			if ($this->props['app_file'] == false) throw new AppFileUndefined();
 			$this->app_root = realpath(dirname($this->props['app_file']).'/..');
 			return $this->props['app_root'];
 		}
-		
+
 		return isset($this->props[$k]) ? $this->props[$k] : false;
 	}
 }

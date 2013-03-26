@@ -5,14 +5,14 @@ namespace vicious {
 
 require_once(__DIR__.'/ViciousException.php');
 require_once(__DIR__.'/Config.php');
-	
+
 class Request {
-	
+
 	private $accept			= false;
 	private $method			= false;
 	private $uri				= false;
-	
-	
+
+
 	public function __construct($uri=false, $method=false) {
 		if ($uri === false) {
 			if (array_key_exists('REQUEST_URI', $_SERVER)) $this->uri = $_SERVER['REQUEST_URI'];
@@ -23,13 +23,13 @@ class Request {
 		if (\options('methodoverride')) $this->method_override();
 	}
 
-	
+
 	/**
 	 * Method fix for browsers
 	 */
 	private function method_override() {
 		if (!array_key_exists('REQUEST_METHOD', $_SERVER)) return false;
-		
+
 		if (array_key_exists('_method', $_POST)) {
 			$verbs = array('GET', 'POST', 'DELETE', 'PUT');
 			$m = strtoupper($_POST['_method']);
@@ -50,7 +50,7 @@ class Request {
 			case 'agent':
 			case 'user_agent': return $_SERVER['HTTP_USER_AGENT'];
 
-			case 'accept': 
+			case 'accept':
 				if (!$this->accept) {
 					$this->accept = array();
 					$p = explode(';', $_SERVER['HTTP_ACCEPT']);
@@ -67,7 +67,7 @@ class Request {
 
 			case 'method':
 			 	return $this->method;
-			
+
 			default:
 				throw new UnknownProperty();
 				break;
